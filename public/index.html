@@ -1,0 +1,66 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Private Cloud Coder</title>
+</head>
+<body>
+  <h2>🔐 Sign in</h2>
+  <input type="text" id="username" placeholder="Your name">
+  <button onclick="signIn()">Sign In</button>
+
+  <div id="cloudUI" style="display:none;">
+    <h2>📁 Welcome, <span id="userLabel"></span></h2>
+    <input type="file" id="fileInput">
+    <button onclick="upload()">Upload</button>
+
+    <h3>Your Files</h3>
+    <ul id="fileList"></ul>
+  </div>
+
+  <script>
+    let username = "";
+
+    function signIn() {
+      username = document.getElementById("username").value.trim();
+      if (!username) return alert("Enter a username");
+      document.getElementById("userLabel").textContent = username;
+      document.getElementById("cloudUI").style.display = "block";
+      loadFiles();
+    }
+
+    function upload() {
+      const file = document.getElementById("fileInput").files[0];
+      if (!file) return alert("Choose a file!");
+
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("username", username);
+
+      fetch("/upload", {
+        method: "POST",
+        body: formData
+      }).then(() => loadFiles());
+    }
+
+    function loadFiles() {
+      fetch("/list-files", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username })
+      })
+      .then(res => res.json())
+      .then(files => {
+        const list = document.getElementById("fileList");
+        list.innerHTML = "";
+        files.forEach(file => {
+          const li = document.createElement("li");
+          li.innerHTML = `${file} <a href="/download/${username}/${file}" download>⬇ Download</a>`;
+          list.appendChild(li);
+        });
+      });
+    }
+  </script>
+</body>
+</html>
