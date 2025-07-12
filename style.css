@@ -1,0 +1,36 @@
+body {
+  font-family: sans-serif;
+  margin: 20px;
+  background: #f0f0f0;
+}
+
+h2 {
+  margin-top: 30px;
+}
+
+input, button {
+  margin: 5px 0;
+  padding: 10px;
+  font-size: 16px;
+}
+
+input[type="text"], input[type="password"] {
+  width: 250px;
+}
+
+#cloudUI {
+  background: white;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 0 5px rgba(0,0,0,0.1);
+  margin-top: 20px;
+}
+
+ul#fileList {
+  list-style: none;
+  padding-left: 0;
+}
+
+ul#fileList li {
+  margin: 5px 0;
+}
